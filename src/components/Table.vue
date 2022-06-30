@@ -1,14 +1,7 @@
 <template>
   <div>
     <h1>Список пользователей</h1>
-    <div class="form-search">
-      <div class="input input_search">
-        <input v-model="searchForm" placeholder="Поиск по имени или e-mail">
-      </div>
-      <div>
-        <a href="#" @click="searchForm = ''">Очистить фильтр</a>
-      </div>
-    </div>
+    <search-form :data-search="users" @searchList="searchList"></search-form>
     <div class="form-sort">
       <span>Сортировка:</span>
       <a class="form-sort__btn" href="#"
@@ -41,30 +34,31 @@
 </template>
 
 <script>
+import SearchForm from '@/components/SearchForm.vue';
+
 export default {
   name: 'TableUser',
+  components: {
+    SearchForm,
+  },
   props: {
     users: Array,
   },
   data() {
     return {
-      searchForm: '',
       userList: [],
       sortState: 1,
     };
   },
-
   watch: {
     users(newValue) {
       this.userList = newValue;
     },
-    searchForm() {
-      const text = this.searchForm.toLowerCase();
-      this.userList = this.users.filter((user) => user.username.toLowerCase().includes(text)
-        || user.email.toLowerCase().includes(text));
-    },
   },
   methods: {
+    searchList(arr) {
+      this.userList = arr;
+    },
     formatDate: (date) => {
       const newDate = new Date(date);
 
@@ -114,37 +108,11 @@ export default {
 
 <style scoped lang="scss">
   .form {
-    &-search {
-      padding: 12px 44px 16px 16px;
-      background: #FFFFFF;
-      box-shadow: 0 18px 15px rgba(148, 148, 148, 0.15);
-      border-radius: 7px;
-      margin-bottom: 70px;
-    }
     &-sort {
       margin-bottom: 15px;
 
       &__btn {
         margin-left: 8px;
-      }
-    }
-  }
-
-  .input {
-    width: 100%;
-    background: #ECEFF0;
-    border-radius: 4px;
-
-    input {
-      font-size: 12px;
-      line-height: 16px;
-      width: 100%;
-      padding: 9px 12px;
-      border: none;
-      background-color: transparent;
-
-      &:focus, &:focus-visible {
-        outline: none;
       }
     }
   }
