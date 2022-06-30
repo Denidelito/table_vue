@@ -6,19 +6,23 @@
     <a href="#" @click="sort(userList, 'rating')">Рейтинг</a>
     <a href="#" @click="sort(userList, 'registration_date')">Регистрация</a>
     <table>
-      <tr>
-        <th>Имя пользователя</th>
-        <th>E-mail</th>
-        <th>Дата регистрации</th>
-        <th>Рейтинг</th>
-      </tr>
-      <tr v-bind:key="user.id"
-          v-for="user in userList">
-        <td>{{user.username}}</td>
-        <td>{{user.email}}</td>
-        <td v-html="formatDate(user.registration_date)"></td>
-        <td>{{user.rating}}</td>
-      </tr>
+      <thead>
+        <tr>
+          <th>Имя пользователя</th>
+          <th>E-mail</th>
+          <th>Дата регистрации</th>
+          <th>Рейтинг</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-bind:key="user.id"
+            v-for="user in userList">
+          <td>{{user.username}}</td>
+          <td>{{user.email}}</td>
+          <td v-html="formatDate(user.registration_date)"></td>
+          <td>{{user.rating}}</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -32,15 +36,19 @@ export default {
   data() {
     return {
       searchForm: '',
-      userList: this.users,
+      userList: [],
       sortState: 1,
     };
   },
+
   watch: {
+    users(newValue) {
+      this.userList = newValue;
+    },
     searchForm() {
-      const text = this.searchForm;
-      this.userList = this.users.filter((user) => user.username.includes(text)
-        || user.email.includes(text));
+      const text = this.searchForm.toLowerCase();
+      this.userList = this.users.filter((user) => user.username.toLowerCase().includes(text)
+        || user.email.toLowerCase().includes(text));
     },
   },
   methods: {
