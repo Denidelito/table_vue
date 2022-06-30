@@ -1,5 +1,7 @@
 <template>
-  <table-user :users="allUsers"/>
+  <main class="container">
+    <table-user :users="allUsers"/>
+  </main>
 </template>
 
 <script>
@@ -21,4 +23,14 @@ export default {
 </script>
 
 <style lang="scss">
+  body {
+    background-color: #E5E5E5;;
+  }
+
+  .container {
+    max-width: 1000px;
+    width: 100%;
+    padding: 0 12px;
+    margin: auto;
+  }
 </style>
